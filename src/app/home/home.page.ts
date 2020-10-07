@@ -47,10 +47,10 @@ export class HomePage {
       this.displayQuestions();
   }
 
-  private displayQuestions(){
+  private async displayQuestions(){
     this.isVisibleForm = false;
   
-     this.startService.getQuestions(this.nbQuestions, this.difficulty) 
+     await this.startService.getQuestions(this.nbQuestions, this.difficulty) 
      .then((resultat) => { this.questions = resultat; }) 
      .catch(async (err) => { 
        const alert = await this.alertCtrl.create({ 
@@ -64,10 +64,6 @@ export class HomePage {
 
     }
 
-
-
-
-   
 
 
   private reponse(answer){
