@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { OpenTriviaService } from '../services/OpenTriviaService';
 
 @Component({
   selector: 'app-home',
@@ -8,12 +9,16 @@ import { AlertController } from '@ionic/angular';
 })
 export class HomePage {
 
-  public pseudo : string = "";
+  public pseudo : string = "chlorella";
   public difficulty : string = "Easy" ;
   public error : string = "";
   public isVisibleForm : boolean = true;
   public nextQuestion : boolean = false;
-  constructor(private alertCtrl : AlertController) {}
+  public nbQuestions : number = 2;
+  public questions = [];
+
+  constructor(private alertCtrl : AlertController,
+    private startService: OpenTriviaService) {}
 
   ngOnInit() {}
 
@@ -21,7 +26,7 @@ export class HomePage {
     console.log("CALL startGame");
     this.error = "";
 
-    if(!this.pseudo || this.pseudo.length <= 3) { 
+    if(!this.pseudo || this.pseudo.length < 3) { 
       this.error = 'Your pseudo is too short (3 caracters minimum)'; 
       const alert = await this.alertCtrl.create({ 
         header : 'Pseudo', 
@@ -39,8 +44,31 @@ export class HomePage {
       alert.present();
       return; 
     } 
-    return this.isVisibleForm = false;
+      this.displayQuestions();
   }
+
+  private displayQuestions(){
+    this.isVisibleForm = false;
+  
+     this.startService.getQuestions(this.nbQuestions, this.difficulty) 
+     .then((resultat) => { this.questions = resultat; }) 
+     .catch(async (err) => { 
+       const alert = await this.alertCtrl.create({ 
+         header: 'Erreur appel Serveur', 
+         message: 'Impossible de récupérer la liste de films' 
+       }); 
+       alert.present(); 
+     });
+
+     this.startService.replaceHTMLCaracter(this.questions);
+
+    }
+
+
+
+
+   
+
 
   private reponse(answer){
   
