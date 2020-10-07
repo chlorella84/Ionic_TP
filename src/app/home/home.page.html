@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Open Trivia
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,59 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Open Trivia</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-list id="form" *ngIf="isVisibleForm">
+      <ion-item>
+        <ion-label position="floating">Your pseudo</ion-label>
+
+        <ion-input type="text" placeholder="Your pseudo" [(ngModel)]="pseudo"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Difficulty</ion-label>
+        <ion-select [(ngModel)]="difficulty">
+          <ion-select-option value="Easy">Easy</ion-select-option>
+          <ion-select-option value="Medium">Medium</ion-select-option>
+          <ion-select-option value="Hard">Hard</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-toggle></ion-toggle>
+        <ion-label> Remember my informations</ion-label>
+      </ion-item>
+
+      <ion-button expand="full" (click)="StartGame()">Let's play!</ion-button>
+
+      <div *ngIf="error">
+        <p id="error"> {{error}} </p>
+      </div>
+    </ion-list>
+
+    <ion-card id="form" *ngIf="!isVisibleForm">
+      <p>Welcome <span>{{pseudo}}</span></p>
+
+      <h5>Question : </h5>
+      <ion-label>
+        To be or not to be?
+      </ion-label>
+      <div>
+        <ion-button color ="success" (click)="reponse(A)">A</ion-button>
+        <ion-button color ="warning" (click)="reponse(B)">B</ion-button><br>
+        <ion-button color ="danger" (click)="reponse(C)">C</ion-button>
+        <ion-button color ="tertiary" (click)="reponse(D)">D</ion-button><br>
+      </div>
+
+
+
+
+    </ion-card>
+    <div *ngIf="nextQuestion">
+      <ion-button color ="medium">Next question</ion-button>
+    </div>
   </div>
 </ion-content>
