@@ -8,7 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { OpenTriviaService } from './services/OpenTriviaService';
+import { OpenTriviaService } from './providers/open-trivia.provider';
 
 @NgModule({
   declarations: [AppComponent],
