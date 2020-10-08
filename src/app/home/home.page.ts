@@ -51,8 +51,8 @@ export class HomePage {
       alert.present();
       return;
     }
-    this.beginGame = true;
     this.displayQuestions();
+    this.beginGame = true;
   }
 
   async displayQuestions() {
@@ -61,13 +61,20 @@ export class HomePage {
     this.indexQuestion = 0;
     this.indexQuestionAnswered = -1;
     this.points = 0;
-    this.questions = await this.startService.getQuestions(2, this.difficulty);
+    try{
+      this.questions = await this.startService.getQuestions(10, this.difficulty);
+      this.loadQuestion();
+    }catch (error) { 
+      const toast = await (this.toastCtrl.create({ message: error })); 
+    toast.present;
+  }
+    
 
 
     //Remplacer les caractères HTML en TypeScript -- avant l'affichage
     this.startService.replaceHTMLCaracter(this.questions);
     this.questions = this.shuffleArray(this.questions);
-    this.loadQuestion();
+    
   }
 
   loadQuestion() {
@@ -117,6 +124,7 @@ export class HomePage {
   }
   async score() {
     this.beginGame = false;
+
     const toast = await this.toastCtrl.create({
       message: "your score is " + this.points,
       duration: 3000,
